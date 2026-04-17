@@ -1,0 +1,12 @@
+default:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: your_account_locator
+      user: your_username
+      password: your_password  # Use environment variables in production
+      role: your_role
+      database: insurance_dw
+      warehouse: insurance_wh
+      schema: staging

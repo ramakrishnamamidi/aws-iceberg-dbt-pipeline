@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: individual_raw
+    database: insurance_dw
+    schema: individual_raw
+    tables:
+      - name: policies_raw
+
+models:
+  - name: stg_policies
+    description: "Cleaned and typed view of raw insurance policies"
+    columns:
+      - name: policy_id
+        description: "Unique identifier for each policy"
+        tests:
+          - unique
+          - not_null
+      - name: policy_status
+        tests:
+          - accepted_values:
+              values: ['ACTIVE', 'LAPSED', 'PENDING']
+      - name: premium_amount
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100000
