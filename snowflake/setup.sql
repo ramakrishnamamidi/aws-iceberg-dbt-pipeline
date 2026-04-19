@@ -19,7 +19,7 @@ CREATE STORAGE INTEGRATION s3_insurance_integration
   STORAGE_PROVIDER = 'S3'
   ENABLED = TRUE
    STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::296588423667:role/SnowflakeS3Role'
-   STORAGE_ALLOWED_LOCATIONS = ('s3://insurance-lakehouse-yourname/');
+   STORAGE_ALLOWED_LOCATIONS = ('s3://insurance-lakehouse-demo-2026/');
 
 -- Get the Snowflake IAM values (add to your AWS role trust policy)
 DESC INTEGRATION s3_insurance_integration;
@@ -44,7 +44,7 @@ CREATE TABLE insurance_dw.individual_raw.policies_raw (
 -- Create external stage
 CREATE STAGE insurance_dw.individual_raw.idl_stage
   STORAGE_INTEGRATION = s3_insurance_integration
-  URL = 's3://insurance-lakehouse-demo-2026/idl/'
+  URL = 's3://insurance-lakehouse-demo-2026/landing/policies_idl/'
   FILE_FORMAT = (TYPE = PARQUET);
 
 -- Load data
