@@ -73,7 +73,7 @@
   - SNOWFLAKE_ROLE=ACCOUNTADMIN
 
 ### 9. Run Snowflake Setup
-- In Worksheets, execute snowflake/setup.sql (updated with AWS account 296588423667)
+- In Worksheets, execute snowflake/setup.sql (replace YOUR_ACCOUNT_ID with your AWS account ID, yourname with your bucket suffix)
 - Note STORAGE_AWS_IAM_USER_ARN and STORAGE_AWS_EXTERNAL_ID from DESC INTEGRATION
 
 ### 10. Create AWS IAM Role for Snowflake
