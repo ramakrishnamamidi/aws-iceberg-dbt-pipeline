@@ -18,7 +18,7 @@ CREATE STORAGE INTEGRATION s3_insurance_integration
   TYPE = EXTERNAL_STAGE
   STORAGE_PROVIDER = 'S3'
   ENABLED = TRUE
-   STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::YOUR_ACCOUNT_ID:role/SnowflakeS3Role'
+   STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::296588423667:role/SnowflakeS3Role'
    STORAGE_ALLOWED_LOCATIONS = ('s3://insurance-lakehouse-yourname/');
 
 -- Get the Snowflake IAM values (add to your AWS role trust policy)
