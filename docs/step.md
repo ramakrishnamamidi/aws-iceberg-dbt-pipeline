@@ -73,8 +73,8 @@
   - SNOWFLAKE_ROLE=ACCOUNTADMIN
 
 ### 9. Run Snowflake Setup
-- In Worksheets, execute snowflake/setup.sql (replace YOUR_ACCOUNT_ID with your AWS account ID, yourname with your bucket suffix)
-- Note STORAGE_AWS_IAM_USER_ARN and STORAGE_AWS_EXTERNAL_ID from DESC INTEGRATION
+- In Worksheets, execute snowflake/setup.sql (replace YOUR_ACCOUNT_ID with your AWS account ID 296588423667, yourname with demo-2026)
+- Note STORAGE_AWS_IAM_USER_ARN and STORAGE_AWS_EXTERNAL_ID from DESC INTEGRATION output
 
 ### 10. Create AWS IAM Role for Snowflake
 - In IAM Console, create role: SnowflakeS3Role
@@ -100,22 +100,9 @@
   ```
 - Attach AmazonS3ReadOnlyAccess
 
-### 11. Create Snowflake External Stage and Load Data
-- Execute:
-  ```
-  CREATE STAGE insurance_dw.individual_raw.idl_stage
-    STORAGE_INTEGRATION = s3_insurance_integration
-    URL = 's3://insurance-lakehouse-demo-2026/idl/'
-    FILE_FORMAT = (TYPE = PARQUET);
-  ```
-- Load:
-  ```
-  COPY INTO insurance_dw.individual_raw.policies_raw
-  FROM @insurance_dw.individual_raw.idl_stage
-  FILE_FORMAT = (TYPE = PARQUET)
-  MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
-  ```
-- Verify: `SELECT COUNT(*) FROM insurance_dw.individual_raw.policies_raw;`
+### 11. Complete Data Load
+- The setup.sql already includes table creation, stage, and COPY INTO
+- Verify load: `SELECT COUNT(*) FROM insurance_dw.individual_raw.policies_raw;` (should be ~10000)
 
 ### 12. Create Snowflake-Managed Iceberg Table
 - Execute snowflake/iceberg_tables.sql
