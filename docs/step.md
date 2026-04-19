@@ -101,8 +101,11 @@
 - Attach AmazonS3ReadOnlyAccess
 
 ### 11. Complete Data Load
-- The setup.sql already includes table creation, stage, and COPY INTO
-- Verify load: `SELECT COUNT(*) FROM insurance_dw.individual_raw.policies_raw;` (should be ~10000)
+- The setup.sql includes table creation, stage, and COPY INTO
+- If load returns 0 rows, debug: `LIST @insurance_dw.individual_raw.idl_stage;` (should list Parquet files)
+- If LIST fails, check IAM role trust policy and integration
+- Re-run COPY if needed: `COPY INTO insurance_dw.individual_raw.policies_raw FROM @insurance_dw.individual_raw.idl_stage FILE_FORMAT = (TYPE = PARQUET) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;`
+- Verify: `SELECT COUNT(*) FROM insurance_dw.individual_raw.policies_raw;` (should be ~10000)
 
 ### 12. Create Snowflake-Managed Iceberg Table
 - Execute snowflake/iceberg_tables.sql
