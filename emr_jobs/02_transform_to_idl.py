@@ -4,16 +4,16 @@ from pyspark.sql.types import DoubleType
 
 spark = SparkSession.builder \
     .appName("InsuranceLanding_to_IDL") \
-    .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions") \
-    .config("spark.sql.catalog.s3catalog", "org.apache.iceberg.spark.SparkCatalog") \
-    .config("spark.sql.catalog.s3catalog.type", "hadoop") \
-    .config("spark.sql.catalog.s3catalog.warehouse", "s3://insurance-lakehouse-yourname/") \
+    .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog") \
+    .config("spark.sql.catalog.glue_catalog.warehouse", "s3://insurance-lakehouse-demo-2026/") \
+    .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog") \
+    .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO") \
     .getOrCreate()
 
 # READ from landing Iceberg table
 landing_df = spark.read \
     .format("iceberg") \
-    .load("s3catalog.landing.policies_raw")
+    .load("glue_catalog.insurance_landing.policies_raw")
 
 print(f"Landing row count: {landing_df.count()}")
 
@@ -50,7 +50,7 @@ clean_df = clean_df.withColumn(
 )
 
 # ── WRITE to IDL Iceberg table ───────────────────────
-clean_df.writeTo("s3catalog.idl.policies_idl") \
+clean_df.writeTo("glue_catalog.insurance_landing.policies_idl") \
     .tableProperty("format-version", "2") \
     .tableProperty("write.target-file-size-bytes", "134217728") \
     .createOrReplace()
@@ -59,4 +59,4 @@ print(f"IDL row count: {clean_df.count()}")
 
 # ── TIME TRAVEL DEMO (Iceberg superpower) ────────────
 # Check table history
-spark.sql("SELECT * FROM s3catalog.idl.policies_idl.history").show()
+spark.sql("SELECT * FROM glue_catalog.insurance_landing.policies_idl.history").show()

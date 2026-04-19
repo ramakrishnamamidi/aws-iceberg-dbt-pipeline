@@ -9,14 +9,13 @@ glueContext = GlueContext(sc)
 spark = glueContext.spark_session
 job = Job(glueContext)
 
-# Iceberg config — tells Spark to use Iceberg table format
-spark.conf.set("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions")
+# Iceberg config — Glue has Iceberg enabled by default
 spark.conf.set("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog")
-spark.conf.set("spark.sql.catalog.glue_catalog.warehouse", "s3://insurance-lakehouse-yourname/landing/")
+spark.conf.set("spark.sql.catalog.glue_catalog.warehouse", "s3://insurance-lakehouse-demo-2026/landing/")
 spark.conf.set("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog")
 spark.conf.set("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO")
 
-BUCKET = "insurance-lakehouse-yourname"
+BUCKET = "insurance-lakehouse-demo-2026"
 SOURCE_PATH = f"s3://{BUCKET}/raw/mock_policies.csv"
 
 # Read CSV
